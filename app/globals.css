@@ -2,26 +2,243 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ============================================================================
+   THEME TOKENS
+   Colors are RGB triplets so Tailwind's `<alpha-value>` opacity utilities work.
+   Three themes: :root/light (default), [data-theme="dark"], [data-theme="fuzzy"].
+   ========================================================================== */
+:root,
+[data-theme="light"] {
+  --bg: 250 250 247;         /* #FAFAF7 warm paper   */
+  --bg-elev: 255 255 255;    /* #FFFFFF              */
+  --fg: 14 15 16;            /* #0E0F10 ink          */
+  --fg-muted: 82 84 88;      /* #525458              */
+  --fg-subtle: 146 148 152;  /* #929498              */
+  --line: 228 227 220;       /* #E4E3DC hairline     */
+  --accent: 13 148 136;      /* #0D9488 teal         */
+  --accent-2: 194 108 8;     /* #C26C08 amber        */
+  --accent-fg: 255 255 255;
+  --glow: 13 148 136;
+  --grid: 14 15 16;          /* faint grid tint      */
+  --grid-opacity: 0.035;
+  --selection: 13 148 136;
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+[data-theme="dark"] {
+  --bg: 10 12 13;            /* #0A0C0D near-black   */
+  --bg-elev: 17 20 23;       /* #111417              */
+  --fg: 237 237 234;         /* #EDEDEA              */
+  --fg-muted: 150 154 158;   /* #969A9E              */
+  --fg-subtle: 92 96 101;    /* #5C6065              */
+  --line: 30 34 38;          /* #1E2226 hairline     */
+  --accent: 45 212 191;      /* #2DD4BF teal         */
+  --accent-2: 251 191 36;    /* #FBBF24 amber        */
+  --accent-fg: 5 8 9;
+  --glow: 45 212 191;
+  --grid: 237 237 234;
+  --grid-opacity: 0.04;
+  --selection: 45 212 191;
+  color-scheme: dark;
+}
+
+/* Fuzzy = the "game" mode. Deep violet canvas, neon magenta + cyan, glow. */
+[data-theme="fuzzy"] {
+  --bg: 11 5 16;             /* #0B0510              */
+  --bg-elev: 22 12 33;       /* #160C21              */
+  --fg: 243 233 255;         /* #F3E9FF              */
+  --fg-muted: 178 152 216;   /* #B298D8              */
+  --fg-subtle: 122 100 158;  /* #7A649E              */
+  --line: 52 28 76;          /* #341C4C              */
+  --accent: 255 47 176;      /* #FF2FB0 neon magenta */
+  --accent-2: 34 211 238;    /* #22D3EE cyan         */
+  --accent-fg: 11 5 16;
+  --glow: 255 47 176;
+  --grid: 168 85 247;
+  --grid-opacity: 0.06;
+  --selection: 255 47 176;
+  color-scheme: dark;
+}
+
+/* ============================================================================
+   BASE
+   ========================================================================== */
+@layer base {
+  * {
+    border-color: rgb(var(--line));
   }
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@layer utilities {
-  .text-balance {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: auto; /* Lenis owns smooth scroll */
+  }
+  body {
+    background-color: rgb(var(--bg));
+    color: rgb(var(--fg));
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    font-feature-settings: "ss01", "cv01", "cv03";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  ::selection {
+    background-color: rgb(var(--selection) / 0.28);
+    color: rgb(var(--fg));
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
     text-wrap: balance;
   }
+  /* Custom scrollbar — thin, themed. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--line)) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--line));
+    border-radius: 999px;
+    border: 3px solid rgb(var(--bg));
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(var(--fg-subtle));
+  }
+}
+
+/* ============================================================================
+   COMPONENT UTILITIES
+   ========================================================================== */
+@layer components {
+  /* The signature Kavela-style micro-label. */
+  .mono-label {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 0.6875rem;
+    line-height: 1;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgb(var(--fg-subtle));
+  }
+
+  /* Hairline-bordered elevated panel. */
+  .panel {
+    background-color: rgb(var(--bg-elev));
+    border: 1px solid rgb(var(--line));
+    border-radius: 1rem;
+  }
+
+  /* Faint technical grid backdrop (used behind sections). */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgb(var(--grid) / var(--grid-opacity)) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(var(--grid) / var(--grid-opacity)) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  /* Neon glow — only meaningful in dark/fuzzy, harmless in light. */
+  .glow-accent {
+    box-shadow: 0 0 0 1px rgb(var(--accent) / 0.4),
+      0 0 24px -4px rgb(var(--glow) / 0.55);
+  }
+  .text-glow {
+    text-shadow: 0 0 18px rgb(var(--glow) / 0.45);
+  }
+
+  /* Focus ring consistent across the site. */
+  .focus-ring {
+    outline: none;
+  }
+  .focus-ring:focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+/* ============================================================================
+   FUZZY MODE — scanlines + subtle CRT flicker overlay
+   ========================================================================== */
+[data-theme="fuzzy"] body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(255 255 255 / 0.025) 0px,
+    rgb(255 255 255 / 0.025) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+  opacity: 0.6;
+}
+
+/* ============================================================================
+   MDX CONTENT — inline code + syntax-highlighted blocks
+   ========================================================================== */
+.mdx-content :not(pre) > code {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.85em;
+  color: rgb(var(--fg));
+  background-color: rgb(var(--bg-elev));
+  border: 1px solid rgb(var(--line));
+  border-radius: 6px;
+  padding: 0.1em 0.4em;
+}
+.mdx-content pre {
+  margin-top: 1.6rem;
+  overflow-x: auto;
+  border-radius: 0.85rem;
+  border: 1px solid rgb(var(--line));
+  background-color: #0b0e11;
+  padding: 1.15rem 1.25rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+.mdx-content pre code {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  display: grid; /* one row per line for line highlighting */
+  background: transparent;
+  border: 0;
+  padding: 0;
+  counter-reset: line;
+}
+.mdx-content pre code > [data-line] {
+  padding: 0 0.25rem;
+  border-left: 2px solid transparent;
+}
+.mdx-content pre code [data-highlighted-line] {
+  border-left-color: rgb(var(--accent));
+  background: rgb(var(--accent) / 0.08);
+}
+.mdx-content [data-rehype-pretty-code-figure] {
+  margin: 0;
+}
+
+/* ============================================================================
+   MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-theme="fuzzy"] body::after {
+    animation: none !important;
+  }
+}
+
+/* Prevent horizontal scroll from off-canvas motion elements. */
+body {
+  overflow-x: hidden;
 }

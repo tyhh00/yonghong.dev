@@ -1,0 +1,34 @@
+---
+title: "Why most AI agents never reach production"
+description: "A model that predicts text isn't an agent that does a job. The gap between a demo and something real is a harness, and almost nobody builds one."
+date: "2026-03-04"
+tags: ["AI", "Agents", "Engineering"]
+published: true
+---
+
+Every week there's a new agent demo that looks like magic. A few weeks later, almost none of them are running in production. I've watched this happen enough times, and shipped enough agents myself, to believe the failure is structural, not incidental.
+
+## A model is not an agent
+
+A bare model call predicts the next token. That's it. It can't remember what happened yesterday, it can't touch your systems, and it can't recover when a step fails. A demo hides all of this because the demo is the happy path, run once, by the person who built it.
+
+Real work is the unhappy path, run a thousand times, by people who didn't build it.
+
+## The missing piece is the harness
+
+The thing that turns a model into an agent that survives contact with reality is a *harness*: the infrastructure around the model that lets it actually act.
+
+- **Skills**: the concrete capabilities the job needs, specified and testable.
+- **Connectors**: real access to real systems, with real auth.
+- **Memory**: state that outlives a single call.
+- **Sandbox**: somewhere to act without breaking things.
+- **Tools**: well-typed actions with predictable failure modes.
+- **The loop**: orchestration, retries, and evaluation baked in.
+
+Miss any of these and you have a demo, not a product.
+
+## Build the harness, then the agent
+
+The lesson I keep relearning: don't start from the model and hope the scaffolding appears. Start from the outcome you want, work backwards into a specification, and stand up the infrastructure first. The model is the easy part; the harness is the work.
+
+That conviction is exactly why I'm building [Kavela](https://kavela.ai/): describe the outcome, and get the harness a real job needs. Everything I learned shipping agents the hard way, turned into a platform.

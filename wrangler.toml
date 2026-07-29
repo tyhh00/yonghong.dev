@@ -1,0 +1,10 @@
+name = "portfolio-2027"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
+
+# Secrets/vars are set in the Cloudflare Pages dashboard (or `wrangler pages secret put`):
+#   RESEND_API_KEY   — required for the contact form to actually send email
+#   CONTACT_TO       — (optional) override recipient; defaults to the private inbox
+#   CONTACT_FROM     — (optional) verified sender, e.g. "Young <hello@yourdomain.com>"
+#   NEXT_PUBLIC_SITE_URL — production origin, e.g. https://tanyonghong.com
