@@ -12,6 +12,9 @@ import { Reveal } from "@/components/motion";
 import { ImageSlot } from "@/components/placeholder";
 import { IconCheck, IconArrowRight } from "@/components/icons";
 
+// Only the known project slugs exist — unknown slugs 404 (no on-demand lambda).
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return projectSlugs.map((slug) => ({ slug }));
 }

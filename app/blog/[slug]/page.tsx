@@ -9,6 +9,9 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Mdx } from "@/components/mdx";
 import { Container, Tag } from "@/components/ui";
 
+// Only known posts exist — unknown slugs 404 (no on-demand lambda).
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return getPostSlugs().map((slug) => ({ slug }));
 }
