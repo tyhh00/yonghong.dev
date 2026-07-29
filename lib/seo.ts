@@ -21,11 +21,13 @@ export function buildMetadata({
   imageAlt?: string;
 }): Metadata {
   const url = new URL(path, site.url).toString();
+  // Bare title for the document <title> — the root layout's title.template
+  // appends "· {site.name}" exactly once. Full title is used for OG/Twitter.
   const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.role}`;
   const desc = description ?? site.description;
 
   return {
-    title: fullTitle,
+    title: title ?? { absolute: fullTitle },
     description: desc,
     alternates: { canonical: url },
     openGraph: {

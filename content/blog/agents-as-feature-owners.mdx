@@ -1,0 +1,60 @@
+---
+title: "Agents as feature owners"
+description: "The biggest unlock in agentic coding isn't a smarter model. It's giving each agent a feature to own for its whole life, in a session that never forgets."
+date: "2026-07-30"
+tags: ["AI", "Agents", "Workflow"]
+published: true
+---
+
+Most people use coding agents as task workers. You open a session, describe a task, take the diff, and close it. The next time that code needs to change, you open a fresh session, paste in some files, and hope the model reconstructs enough context to be useful.
+
+That pattern works, and it also quietly caps your productivity. The fix that changed how I build: stop treating agents as task workers, and start treating them as **feature owners**.
+
+## Task workers vs. feature owners
+
+A task worker is stateless. It does one thing and forgets. A feature owner is stateful. It builds a feature, and then it keeps owning that feature: the follow-up changes, the bug that surfaces a week later, the refactor when requirements shift. Same agent, same feature, same living context.
+
+The structure I run looks a lot like a small engineering team:
+
+- A **master planner** holds the global picture. It decomposes the product into features, defines the boundaries between them, and hands each feature to an owner.
+- Each **feature owner** is a long-lived coding session that builds its feature and stays alive to maintain it.
+
+The planner is the tech lead. The owners are the engineers who actually know their corner of the codebase, because they wrote it.
+
+## The problem this actually solves
+
+Here is the thing nobody tells you about handing a task to a fresh session: **the code is not the context.**
+
+When you build a feature, the valuable part is not only the lines that landed. It is everything around them. The approaches you tried and threw away. The constraint that made you pick the ugly option over the elegant one. The reason two modules talk to each other the way they do. That knowledge lives in the conversation, not in the diff.
+
+So when a feature breaks or needs to change and you spin up a new session, you are forced to reconstruct that context from the outside. You paste files. You wire up semantic search over the repo. You build a code graph and hope the retrieval surfaces the right neighborhood. Even when it works, you have recovered the **what** while losing the **why**. The new agent re-derives decisions the original one already made, sometimes reversing them, sometimes reintroducing the exact bug the first one had designed around.
+
+Context reconstruction is lossy by nature. The cleanest way to avoid the loss is to never throw the context away in the first place.
+
+## Same session, same owner
+
+If the agent that changes a feature is the same agent that built it, none of that reconstruction happens. The design decisions are still in the window. The dead ends are still remembered. You ask for a change and it lands, because the owner already knows the shape of the thing.
+
+This is why persistence is not a nice-to-have. It is the whole mechanism. A feature owner is only useful if it survives:
+
+- **Across a restart**, so a machine reboot does not wipe a week of accumulated context.
+- **In parallel**, so ten owners can work at once without you babysitting a single terminal.
+- **Addressably**, so you can walk up to the owner of feature X specifically and say "change this."
+
+## The tooling that makes it real
+
+This is exactly the problem I built [HNA-Code](https://github.com/tyhh00/HNA-Code) to solve. It is a grid where every cell is a persistent coding session, one per feature owner. Sessions resume where they left off after a restart. Cells glow when an owner finishes or needs a decision from you, so your attention goes to the feature that needs it instead of to whichever terminal happens to be on top.
+
+Once you can keep twenty owners alive at once, the planner-and-owners model stops being a diagram and becomes a workflow. The planner fans out features. The owners build in parallel. You triage by glow.
+
+## Running it well
+
+A few things matter in practice:
+
+- **Draw clean feature boundaries.** Owners that share too much surface area fight over the same files. The planner's real job is carving the work so ownership does not overlap.
+- **Keep the planner as the source of truth for the map.** Owners know their feature deeply; only the planner knows how the features fit together.
+- **Plan for compaction.** Context windows are finite, so a very long-lived owner eventually needs its history summarized. Summarize the decisions, not the transcript, and the ownership survives.
+
+## The payoff
+
+When agents are task workers, your throughput is capped by how fast you can re-explain your own codebase to a stranger. When agents are feature owners, that cost goes to zero, because the owner never left. Give each agent a feature to own for its whole life, and productivity does not go up by a little. It skyrockets.
