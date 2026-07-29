@@ -29,8 +29,8 @@
   --bg: 10 12 13;            /* #0A0C0D near-black   */
   --bg-elev: 17 20 23;       /* #111417              */
   --fg: 237 237 234;         /* #EDEDEA              */
-  --fg-muted: 150 154 158;   /* #969A9E              */
-  --fg-subtle: 92 96 101;    /* #5C6065              */
+  --fg-muted: 180 185 190;   /* #B4B9BE readable body */
+  --fg-subtle: 138 143 149;  /* #8A8F95 labels        */
   --line: 30 34 38;          /* #1E2226 hairline     */
   --accent: 45 212 191;      /* #2DD4BF teal         */
   --accent-2: 251 191 36;    /* #FBBF24 amber        */

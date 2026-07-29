@@ -21,6 +21,8 @@ The structure I run looks a lot like a small engineering team:
 
 The planner is the tech lead. The owners are the engineers who actually know their corner of the codebase, because they wrote it.
 
+<Figure caption="Master planner to feature owners: one planner decomposes the product, each session owns a feature end to end." />
+
 ## The problem this actually solves
 
 Here is the thing nobody tells you about handing a task to a fresh session: **the code is not the context.**
@@ -44,6 +46,8 @@ This is why persistence is not a nice-to-have. It is the whole mechanism. A feat
 ## The tooling that makes it real
 
 This is exactly the problem I built [HNA-Code](https://github.com/tyhh00/HNA-Code) to solve. It is a grid where every cell is a persistent coding session, one per feature owner. Sessions resume where they left off after a restart. Cells glow when an owner finishes or needs a decision from you, so your attention goes to the feature that needs it instead of to whichever terminal happens to be on top.
+
+<Figure caption="HNA-Code: a live grid of persistent feature owners, each cell glowing when it finishes or needs you." />
 
 Once you can keep twenty owners alive at once, the planner-and-owners model stops being a diagram and becomes a workflow. The planner fans out features. The owners build in parallel. You triage by glow.
 

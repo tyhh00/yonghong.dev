@@ -5,6 +5,7 @@ import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
+import { ImageSlot } from "./placeholder";
 
 const components = {
   h2: (p: { children?: ReactNode }) => (
@@ -49,6 +50,32 @@ const components = {
   ),
   // Inline vs block code are styled via CSS (.mdx-content) to avoid clobbering
   // the syntax-highlighted <pre><code> that rehype-pretty-code emits.
+
+  // Screenshot / figure slot for posts. Leave `src` off to show a placeholder;
+  // drop a real image in /public/images/blog and set src to render it.
+  Figure: ({
+    src,
+    alt,
+    caption,
+  }: {
+    src?: string;
+    alt?: string;
+    caption?: string;
+  }) => (
+    <figure className="my-9">
+      <ImageSlot
+        src={src}
+        alt={alt ?? caption ?? "Screenshot"}
+        label={caption ?? "Drop screenshot here"}
+        className="aspect-[16/10] w-full"
+      />
+      {caption && (
+        <figcaption className="mono-label mt-3 text-center">
+          {caption}
+        </figcaption>
+      )}
+    </figure>
+  ),
 };
 
 export function Mdx({ source }: { source: string }) {
