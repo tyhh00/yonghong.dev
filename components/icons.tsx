@@ -193,11 +193,31 @@ export function IconGithub(p: IconProps) {
   );
 }
 
+export function IconTelegram(p: IconProps) {
+  return (
+    <svg width={24} height={24} viewBox="0 0 24 24" fill="currentColor" {...p}>
+      <path d="M21.94 4.4a1.6 1.6 0 0 0-2.2-1.83L2.9 9.5c-1.36.53-1.29 2.5.1 2.94l4.34 1.35 1.63 5.1c.32 1 1.6 1.27 2.3.49l2.1-2.34 4.3 3.16c.88.65 2.12.2 2.33-.86l2.94-14.94ZM9.3 13.1l8.4-5.4c.32-.21.65.22.36.48l-6.85 6.16a1 1 0 0 0-.3.55l-.36 2.68c-.05.36-.55.4-.65.05l-1.07-3.4a.6.6 0 0 1 .27-.72Z" />
+    </svg>
+  );
+}
+
+export function IconKavela(p: IconProps) {
+  return (
+    <svg {...base} {...p}>
+      <path d="M12 3.5 20 8v8l-8 4.5L4 16V8l8-4.5Z" />
+      <path d="M4 8l8 4.5L20 8" />
+      <path d="M12 12.5V20.5" />
+    </svg>
+  );
+}
+
 export const socialIcons = {
   x: IconX,
   linkedin: IconLinkedin,
   github: IconGithub,
   mail: IconMail,
+  telegram: IconTelegram,
+  kavela: IconKavela,
 } as const;
 
 export const milestoneIcons = {
